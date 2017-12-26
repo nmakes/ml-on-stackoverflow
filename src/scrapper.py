@@ -6,8 +6,9 @@ from bs4 import BeautifulSoup
 # Dependencies
 import config
 
-# Class to handle metadata
 class MetaData:
+	
+	# Class to handle metadata
 
 	def __init__(self, userName='unknown user'):
 		self.userName = userName
@@ -19,22 +20,35 @@ class MetaData:
 		self.successfulTermination = False
 
 
+	# Reinitialize the MetaData object (to be done after every call)
 	def reinit(self):
 		self = MetaData(self.userName)
 
 
+	# Start Analysis
 	def start_analysis(self):
+		
+		# automatically called when the first webpage load occurs
+		# can be called manually before any website is scraped
+
 		self.startTime = datetime.datetime.now
 		self.endTime = None
 
 
 	def end_analysis(self):
+		
+		# automatically called when publishMetaData is called after analysis has started
+		# can be called manually after all the work is done
+
 		self.endTime = datetime.datetime.now
 		self.executionTime = self.endTime - self.startTime
 		self.successfulTermination = True
 
 
 	def write_to_file(self, metaFileName=config.metaFileName):
+
+		# writes metadata to file
+		
 		with open(metaFileName, 'a') as metaFile:
 			metaFile.writeline('\n')
 			metaFile.write("Analysis started by " + str(self.userName) + '\n')
@@ -56,15 +70,6 @@ class MetaData:
 		if startTime == None:
 			print "ERROR [MetaData.publishMetaData] : No Analysis has been done. Cannot write to the meta file."
 			return
-
-		if endTime == None:
-			print "WARNING [MetaData.publishMetaData] : Analysis has not terminated."
-			res = raw_input("Are you sure you want to write to the meta file? (y/n): ")
-
-			if res=='y':
-				self.write_to_file()
-			else:
-				return
 
 		else:
 			self.end_analysis()
