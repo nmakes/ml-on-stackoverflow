@@ -67,6 +67,8 @@ class MetaData:
 
 	def publishMetaData(self):
 
+		# Wrapper for publishing metadata to the meta file
+
 		if startTime == None:
 			print "ERROR [MetaData.publishMetaData] : No Analysis has been done. Cannot write to the meta file."
 			return
